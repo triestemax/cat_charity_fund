@@ -1,8 +1,8 @@
 from typing import List, Optional
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+
 
 from app.api.exceptions import DuplicateException
 from app.api.validators import (
