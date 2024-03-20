@@ -150,3 +150,6 @@ _HTTP 1.1 200 OK_
 ```
 
 ----------------------------------------
+### Автор проекта:
+Максим Шабанов
+[https://github.com/triestemax](https://github.com/triestemax)
