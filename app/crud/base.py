@@ -34,9 +34,6 @@ class CRUDBase:
         await session.refresh(db_obj)
         return db_obj
 
-
-class CRUDBaseAdvanced(CRUDBase):
-
     async def get(
             self,
             obj_id: int,

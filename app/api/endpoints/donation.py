@@ -8,7 +8,7 @@ from app.api.exceptions import DuplicateException
 from app.core.db import get_async_session
 from app.core.user import current_superuser, current_user
 from app.crud.donation import donation_crud
-from app.models import CharityProject, User
+from app.models import CharityProject, Donation, User
 from app.schemas.donation import DonationCreate, DonationDB, DonationDBSuper
 from app.services.utils import funds_distribution, get_uninvested_objects
 
@@ -20,7 +20,7 @@ async def create_new_donation(
         donation: DonationCreate,
         session: AsyncSession = Depends(get_async_session),
         user: User = Depends(current_user),
-):
+) -> Donation:
     """Создание пожертвования."""
     new_donation = await donation_crud.create(donation, session, user)
     open_projects = await get_uninvested_objects(CharityProject, session)
@@ -36,13 +36,13 @@ async def create_new_donation(
 
 @router.get(
     '/',
-    response_model=Optional[List[DonationDBSuper]],
+    response_model=List[DonationDBSuper],
     response_model_exclude_none=True,
     dependencies=[Depends(current_superuser)],
 )
 async def get_all_donations(
         session: AsyncSession = Depends(get_async_session)
-):
+) -> List[Donation]:
     """Получение списка пожертвований. Только для суперюзеров."""
     donations = await donation_crud.get_multi(session)
     return donations
@@ -57,7 +57,7 @@ async def get_all_donations(
 async def get_my_donations(
         user: User = Depends(current_user),
         session: AsyncSession = Depends(get_async_session),
-):
+) -> List[Donation]:
     """Получение списка своих пожертвований."""
     my_donations = await donation_crud.get_by_user(user=user, session=session)
     return my_donations

@@ -3,11 +3,11 @@ from typing import Optional
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.crud.base import CRUDBaseAdvanced
+from app.crud.base import CRUDBase
 from app.models.charity_project import CharityProject
 
 
-class CRUDCharityProject(CRUDBaseAdvanced):
+class CRUDCharityProject(CRUDBase):
     """Расширенный CRUD класс для проектов."""
 
     async def get_project_id_by_name(

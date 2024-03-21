@@ -6,6 +6,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import CharityProject, Donation
 
+'''
+ Попробовал через | выдает ошибку.
+ В мануале написано, что Union можно заменить на |
+ только с версии 3.10 и выше, а мы работаем в 3.9
+'''
 MyComplexType = Union[Donation, CharityProject]
 
 
@@ -43,7 +48,7 @@ async def get_uninvested_objects(
 ) -> Optional[List[MyComplexType]]:
     uninvested_objects = await session.execute(
         select(obj_model).where(
-            obj_model.fully_invested == 0
+            obj_model.fully_invested.is_(False)
         ).order_by(obj_model.create_date)
     )
     return uninvested_objects.scalars().all()
